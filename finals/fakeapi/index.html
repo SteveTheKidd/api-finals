@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <title>API</title>
+</head>
+<body>
+
+    <button onclick="get_record()">Get Record</button>
+    <button onclick="add_record()">Add Record</button>
+    <button onclick="update_record()">Update Record</button>
+    <button onclick="delete_record()">Delete Record</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+            <script>
+                function get_record() {
+                    $.ajax({
+                        url: "http://localhost/api-finals/finals/students/",
+                        method: "GET",
+                        success: function(response) {
+                            console.log(response)
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error);
+                        }
+                    });
+                }
+
+                function add_record() {
+            var name = prompt("Enter the name:");
+            var course = prompt("Enter the course:");
+
+            $.ajax({
+                url: "http://localhost/api-finals/finals/students/",
+                method: "POST",
+                data: {
+                    "name": name,
+                    "course": course
+                },
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    var err = xhr.responseJSON;
+                    console.log(err.message);
+                }
+            });
+        }
+
+        function update_record() {
+            var id = prompt("Enter the ID of the record to update:");
+            var name = prompt("Enter the new name:");
+            var course = prompt("Enter the new course:");
+
+            $.ajax({
+                url: "http://localhost/api-finals/finals/students/index.php?id=" + id,
+                method: "PUT",
+                data: {
+                    "name": name,
+                    "course": course
+                },
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        console.log(xhr.responseJSON.message);
+                    } else {
+                        console.log("An error occurred: " + error);
+                    }
+                }
+            });
+        }
+
+        function delete_record() {
+            var id = prompt("Enter the ID of the record to delete:");
+
+            $.ajax({
+                url: "http://localhost/api-finals/finals/students/index.php?id=" + id,
+                method: "DELETE",
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    var err = xhr.responseJSON;
+                    console.log(err.message);
+                }
+            });
+        }
+            </script>
+        </body>
+        </html>
